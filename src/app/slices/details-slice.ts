@@ -4,14 +4,14 @@ import { TVShow } from '@/types';
 import { RootState } from '@app/store';
 import { getTVShow } from '@thunks/details-thunks';
 
-interface SearchState {
+interface DetailsState {
   tvShow?: TVShow;
-  loading: boolean;
+  loading: number;
   error: boolean;
 }
 
-const initialState: SearchState = {
-  loading: false,
+const initialState: DetailsState = {
+  loading: 0,
   error: false,
 };
 
@@ -22,15 +22,15 @@ export const detailsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTVShow.pending, (state) => {
-        state.loading = true;
+        state.loading++;
         state.error = false;
       })
       .addCase(getTVShow.fulfilled, (state, { payload }) => {
-        state.loading = false;
+        state.loading--;
         state.tvShow = payload;
       })
       .addCase(getTVShow.rejected, (state) => {
-        state.loading = false;
+        state.loading--;
         state.error = true;
       });
   },

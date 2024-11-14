@@ -40,7 +40,7 @@ const SearchBar = () => {
         options={tvShows}
         filterOptions={(x) => x}
         getOptionLabel={(x) => x.name}
-        loading={loading}
+        loading={!!loading}
         onInputChange={(_, inputValue) => handleInputChange(inputValue)}
         onChange={(_, value) => {
           handleChange(value);

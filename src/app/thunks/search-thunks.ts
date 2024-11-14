@@ -7,12 +7,22 @@ interface ApiTVShow {
   show: TVShow;
 }
 
+let controller: AbortController;
+
 export const searchTVShows = createAsyncThunk(
   'search/searchTVShows',
   async (title: string): Promise<TVShow[]> => {
+    if (controller) {
+      controller.abort();
+    }
+    controller = new AbortController();
+
     const { data, status, statusText } = await api.get<ApiTVShow[]>(
       'search/shows',
-      { params: { q: title } }
+      {
+        params: { q: title },
+        signal: controller?.signal,
+      }
     );
 
     if (status !== 200) {
