@@ -17,7 +17,7 @@ const Page404 = () => {
       <Typography variant='h1' style={{ color: 'white' }}>
         404
       </Typography>
-      <Typography variant='h6' style={{ color: 'white' }}>
+      <Typography variant='h6' style={{ color: 'white' }} gutterBottom>
         The page you’re looking for doesn’t exist.
       </Typography>
       <Button variant='contained' component={Link} to='/'>
