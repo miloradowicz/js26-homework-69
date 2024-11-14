@@ -30,6 +30,12 @@
       "@app/*": [
         "./src/app/*"
       ],
+      "@slices/*": [
+        "./src/app/slices/*"
+      ],
+      "@thunks/*": [
+        "./src/app/thunks/*"
+      ],
       "@components/*": [
         "./src/components/*"
       ],
