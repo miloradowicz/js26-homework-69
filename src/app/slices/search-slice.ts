@@ -19,7 +19,13 @@ const initialState: SearchState = {
 export const searchSlice = createSlice({
   name: 'search',
   initialState,
-  reducers: {},
+  reducers: {
+    resetState: (state) => {
+      state.tvShows = [];
+      state.loading = 0;
+      state.error = false;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(searchTVShows.pending, (state) => {
@@ -38,6 +44,7 @@ export const searchSlice = createSlice({
 });
 
 export const searchReducer = searchSlice.reducer;
+export const { resetState } = searchSlice.actions;
 
 export const Selectors = {
   tvShows: (state: RootState) => state.search.tvShows,

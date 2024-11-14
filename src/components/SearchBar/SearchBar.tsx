@@ -1,9 +1,9 @@
-import React from 'react';
+import { Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { TVShow } from '@/types';
 import { useAppDispatch, useAppSelector } from '@app/hooks';
-import { Selectors } from '@slices/search-slice';
+import { resetState, Selectors } from '@slices/search-slice';
 import { searchTVShows } from '@thunks/search-thunks';
 
 import {
@@ -24,6 +24,8 @@ const SearchBar = () => {
   const handleInputChange = async (inputValue: string) => {
     if (inputValue) {
       await dispatch(searchTVShows(inputValue));
+    } else {
+      dispatch(resetState());
     }
   };
 
@@ -40,19 +42,11 @@ const SearchBar = () => {
         options={tvShows}
         filterOptions={(x) => x}
         getOptionLabel={(x) => x.name}
+        getOptionKey={(x) => x.id}
         loading={!!loading}
         onInputChange={(_, inputValue) => handleInputChange(inputValue)}
         onChange={(_, value) => {
           handleChange(value);
-        }}
-        renderOption={(props, option) => {
-          const { key: _key, ...optionProps } = props;
-
-          return (
-            <li key={option.id} {...optionProps}>
-              {option.name}
-            </li>
-          );
         }}
         renderInput={(params) => (
           <TextField
@@ -62,12 +56,12 @@ const SearchBar = () => {
               input: {
                 ...params.InputProps,
                 endAdornment: (
-                  <React.Fragment>
+                  <Fragment>
                     {loading ? (
                       <CircularProgress color='inherit' size={20} />
                     ) : null}
                     {params.InputProps.endAdornment}
-                  </React.Fragment>
+                  </Fragment>
                 ),
               },
             }}
