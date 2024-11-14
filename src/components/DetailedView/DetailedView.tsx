@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@app/hooks';
 import { Selectors } from '@slices/details-slice';
 import { getTVShow } from '@thunks/details-thunks';
 
-import { Box, LinearProgress, Typography } from '@mui/material';
+import { Box, Grid2 as Grid, LinearProgress, Typography } from '@mui/material';
 
 const DetailedView = () => {
   const tvShow = useAppSelector(Selectors.tvShow);
@@ -36,13 +36,17 @@ const DetailedView = () => {
       {loading ? (
         <LinearProgress />
       ) : tvShow ? (
-        <>
-          <img src={tvShow.image.medium} alt={tvShow.name} />
-          <Typography variant='h3'>{tvShow.name}</Typography>
-          {tvShow.summary && (
-            <Typography component='div'>{parse(tvShow.summary)}</Typography>
-          )}
-        </>
+        <Grid container spacing={1}>
+          <Grid size={{ xs: 12, sm: 5, md: 3 }}>
+            <img src={tvShow.image.medium} alt={tvShow.name} />
+          </Grid>
+          <Grid size={{ xs: 12, sm: 7, md: 9 }}>
+            <Typography variant='h3'>{tvShow.name}</Typography>
+            {tvShow.summary && (
+              <Typography component='div'>{parse(tvShow.summary)}</Typography>
+            )}
+          </Grid>
+        </Grid>
       ) : null}
     </Box>
   );
