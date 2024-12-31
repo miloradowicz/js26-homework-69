@@ -6,13 +6,13 @@ import { searchTVShows } from '@thunks/search-thunks';
 
 interface SearchState {
   tvShows: TVShow[];
-  loading: number;
+  loading: boolean;
   error: boolean;
 }
 
 const initialState: SearchState = {
   tvShows: [],
-  loading: 0,
+  loading: false,
   error: false,
 };
 
@@ -22,23 +22,25 @@ export const searchSlice = createSlice({
   reducers: {
     resetState: (state) => {
       state.tvShows = [];
-      state.loading = 0;
+      state.loading = false;
       state.error = false;
     },
   },
   extraReducers: (builder) => {
     builder
       .addCase(searchTVShows.pending, (state) => {
-        state.loading++;
+        state.loading = true;
         state.error = false;
       })
       .addCase(searchTVShows.fulfilled, (state, { payload }) => {
-        state.loading--;
+        state.loading = false;
         state.tvShows = payload;
       })
-      .addCase(searchTVShows.rejected, (state) => {
-        state.loading--;
-        state.error = true;
+      .addCase(searchTVShows.rejected, (state, { meta }) => {
+        if (meta.aborted) {
+          state.error = true;
+        }
+        state.loading = false;
       });
   },
 });

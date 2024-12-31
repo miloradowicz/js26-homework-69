@@ -6,13 +6,13 @@ import { getTVShow } from '@thunks/details-thunks';
 
 interface DetailsState {
   tvShow?: TVShow;
-  loading: number;
+  loading: boolean;
   error: boolean;
   imageLoaded: boolean;
 }
 
 const initialState: DetailsState = {
-  loading: 0,
+  loading: false,
   error: false,
   imageLoaded: false,
 };
@@ -28,17 +28,19 @@ export const detailsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getTVShow.pending, (state) => {
-        state.loading++;
+        state.loading = true;
         state.error = false;
         state.imageLoaded = false;
       })
       .addCase(getTVShow.fulfilled, (state, { payload }) => {
-        state.loading--;
+        state.loading = false;
         state.tvShow = payload;
       })
-      .addCase(getTVShow.rejected, (state) => {
-        state.loading--;
-        state.error = true;
+      .addCase(getTVShow.rejected, (state, { meta }) => {
+        if (meta.aborted) {
+          state.error = true;
+        }
+        state.loading = false;
       });
   },
 });

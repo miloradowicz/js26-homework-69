@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { TVShow } from '@/types';
@@ -21,9 +21,19 @@ const SearchBar = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [input, setInput] = useState('');
+
+  useEffect(() => {
+    const p = dispatch(searchTVShows(input));
+
+    return () => {
+      p.abort();
+    };
+  }, [dispatch, input]);
+
   const handleInputChange = async (inputValue: string) => {
     if (inputValue) {
-      await dispatch(searchTVShows(inputValue));
+      setInput(inputValue);
     } else {
       dispatch(resetState());
     }

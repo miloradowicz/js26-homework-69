@@ -5,19 +5,12 @@ import { api } from '@app/api';
 
 type ApiTVShow = TVShow;
 
-let controller: AbortController;
-
 export const getTVShow = createAsyncThunk(
   'details/getTVShow',
-  async (id: number) => {
-    if (controller) {
-      controller.abort();
-    }
-    controller = new AbortController();
-
+  async (id: number, { signal }) => {
     const { data, status, statusText } = await api.get<ApiTVShow>(
       `shows/${id}`,
-      { signal: controller?.signal }
+      { signal }
     );
 
     if (status !== 200) {
